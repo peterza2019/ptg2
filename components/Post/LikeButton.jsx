@@ -74,11 +74,11 @@ const LikeButton = ({ postId, likes, queryId }) => {
         <Flex gap={".2rem"} align="center">
           <Iconify
             icon="ph:heart-fill"
-            width={"55px"}
+            width={"50px"}
             style={{ color: isLiked ? "var(--primary)" : "grey" }}
           />
           <Typography.Text className="typoBody2">
-            {likes?.length === 0 ? "Likes" : `${likes?.length} Likes`}
+            {likes?.length === 0 ? " " : `${likes?.length} `}
             
           </Typography.Text>
         </Flex>
@@ -92,7 +92,7 @@ const LikeButton = ({ postId, likes, queryId }) => {
         <Flex gap={".3rem"} align="center">
           <Iconify
             icon="twemoji:smiling-cat-with-heart-eyes"
-            width={"45px"}
+            width={"40px"}
             style={{ color: isLiked ? "var(--primary)" : "grey" }}
           />
         </Flex>
@@ -106,7 +106,7 @@ const LikeButton = ({ postId, likes, queryId }) => {
         <Flex gap={".3rem"} align="center">
           <Iconify
             icon="twemoji:dog-face"
-            width={"45px"}
+            width={"40px"}
             style={{ color: isLiked ? "var(--primary)" : "grey" }}
           />
         </Flex>
@@ -120,11 +120,12 @@ const LikeButton = ({ postId, likes, queryId }) => {
         <Flex gap={".5rem"} align="center">
           <Iconify
             icon="emojione:unicorn-face"
-            width={"45px"}
+            width={"40px"}
             style={{ color: isLiked ? "var(--primary)" : "grey" }}
           />
         </Flex>
       </Button>
+
     </HappyProvider>
   );
 };

@@ -6,10 +6,10 @@ import Iconify from "../Iconify";
 const CommentButton = ({ comments }) => {
   return (
     <Button type="text" size="small">
-      <Flex gap={".5rem"} align="center">
+      <Flex gap={".7rem"} align="center">
         <Iconify
           icon="iconamoon:comment-dots-fill"
-          width={"45px"}
+          width={"25px"}
           color="grey"
         />
         <Typography.Text className="typoBody2">
