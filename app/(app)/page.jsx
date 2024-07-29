@@ -5,8 +5,8 @@ import { QueryClient } from "@tanstack/react-query";
 
 export const metadata = () => {
   return {
-    title: `Socialhop`,
-    description: `New way to feel freedom`,
+    title: `Petstagram`,
+    description: `For Pets, Pet Lovers and Owners`,
   };
 };
 

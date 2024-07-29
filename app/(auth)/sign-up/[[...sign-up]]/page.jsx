@@ -1,8 +1,13 @@
+// pages/signup.js
 import { SignUp } from "@clerk/nextjs";
-import React from "react";
+import AuthLayout from "@/components/AuthLayout";
 
 const SignUpPage = () => {
-  return <SignUp />;
+  return (
+    <AuthLayout>
+      <SignUp />
+    </AuthLayout>
+  );
 };
 
 export default SignUpPage;

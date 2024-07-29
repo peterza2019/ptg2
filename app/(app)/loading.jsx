@@ -7,8 +7,8 @@ const MainLoadingScreen = () => {
     <Flex justify="center" align="center" style={{ height: "100vh" }}>
       <Image
         src="/images/logo.png"
-        width={150}
-        height={40}
+        width={350}
+        height={80}
         alt="logo"
         style={{
           marginTop: "-5rem",

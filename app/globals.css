@@ -12,7 +12,7 @@ body {
 }
 
 :root {
-  --primary: #f9aa11;
+  --primary: #ffffff;
   --text-color: rgba(0, 0, 0, 0.88);
   --primary-low: rgba(249, 170, 17, 0.2);
   --xl-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px,
@@ -21,7 +21,7 @@ body {
   --gradient: linear-gradient(
     261deg,
     rgba(249, 170, 17, 0) -71.44%,
-    #f9aa11 51.14%
+    #f111f9 51.14%
   );
 }
 
