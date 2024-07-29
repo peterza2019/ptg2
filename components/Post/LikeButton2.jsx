@@ -7,10 +7,10 @@ import { useUser } from "@clerk/nextjs";
 import { updatePostLike } from "@/actions/post";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateQueryCacheLikes } from "@/utils";
-import confetti from "canvas-confetti"; // Import canvas-confetti
 
 const LikeButton = ({ postId, likes, queryId }) => {
   const { user } = useUser();
+
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
@@ -18,76 +18,91 @@ const LikeButton = ({ postId, likes, queryId }) => {
   }, [user, likes]);
 
   const actionType = isLiked ? "unlike" : "like";
+
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: (postId, actionType) => updatePostLike(postId, actionType),
+
+    // This function will be run just before the mutation function
     onMutate: async () => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries(["posts", queryId]);
+
+      // Snapshot the previous value
       const previousPosts = queryClient.getQueryData(["posts", queryId]);
 
-      queryClient.setQueryData(["posts", queryId], (old) => ({
-        ...old,
-        pages: old.pages.map((page) => ({
-          ...page,
-          data: page.data.map((post) => (post.id === postId
-            ? {
-              ...post,
-              likes: updateQueryCacheLikes(
-                post.likes,
-                postId,
-                user.id,
-                actionType
-              ),
-            }
-            : post)),
-        })),
-      }));
+      // Optimistically update to the new value
+      queryClient.setQueryData(["posts", queryId], (old) => {
+        console.log(old);
+        return {
+          ...old,
+          pages: old.pages.map((page) => {
+            return {
+              ...page,
+              data: page.data.map((post) => {
+                if (post.id === postId) {
+                  return {
+                    ...post,
+                    likes: updateQueryCacheLikes(
+                      post.likes,
+                      postId,
+                      user.id,
+                      actionType
+                    ),
+                  };
+                } else {
+                  return post;
+                }
+              }),
+            };
+          }),
+        };
+      });
 
+      // Return a context object with the snapshotted value
       return { previousPosts };
     },
     onError: (err, variables, context) => {
       console.log("this is error", err);
       queryClient.setQueryData(["posts"], context.previousPosts);
     },
+
+    // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries(["posts"]);
     },
   });
 
-  const handleLikeClick = () => {
-    mutate(postId, actionType);
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.5 },
-    });
-  };
-
   return (
     <HappyProvider>
-      <Button
+
+<Button
         size="small"
         style={{ background: "transparent", border: "none", boxShadow: "none" }}
-        
-      >
-        <Flex gap={".2rem"} align="center">
+    >
+      
+              <Flex gap={".4rem"} align="center">
           <Iconify
             icon="ph:heart-fill"
             width={"55px"}
             style={{ color: isLiked ? "var(--primary)" : "grey" }}
           />
+
           <Typography.Text className="typoBody2">
-            {likes?.length === 0 ? "Likes" : `${likes?.length} Likes`}
-            
+            {likes?.length === 0 ? "Like" : `${likes?.length} Likes`}
           </Typography.Text>
         </Flex>
       </Button>
 
+
+
       <Button
         size="small"
         style={{ background: "transparent", border: "none", boxShadow: "none" }}
-        onClick={handleLikeClick}
+        onClick={() => {
+          mutate(postId, actionType);
+        }}
       >
         <Flex gap={".3rem"} align="center">
           <Iconify
@@ -95,13 +110,17 @@ const LikeButton = ({ postId, likes, queryId }) => {
             width={"45px"}
             style={{ color: isLiked ? "var(--primary)" : "grey" }}
           />
+
+          
         </Flex>
       </Button>
 
       <Button
         size="small"
         style={{ background: "transparent", border: "none", boxShadow: "none" }}
-        onClick={handleLikeClick}
+        onClick={() => {
+          mutate(postId, actionType);
+        }}
       >
         <Flex gap={".3rem"} align="center">
           <Iconify
@@ -109,13 +128,17 @@ const LikeButton = ({ postId, likes, queryId }) => {
             width={"45px"}
             style={{ color: isLiked ? "var(--primary)" : "grey" }}
           />
+
+         
         </Flex>
       </Button>
 
       <Button
         size="small"
         style={{ background: "transparent", border: "none", boxShadow: "none" }}
-        onClick={handleLikeClick}
+        onClick={() => {
+          mutate(postId, actionType);
+        }}
       >
         <Flex gap={".5rem"} align="center">
           <Iconify
@@ -125,6 +148,8 @@ const LikeButton = ({ postId, likes, queryId }) => {
           />
         </Flex>
       </Button>
+
+
     </HappyProvider>
   );
 };

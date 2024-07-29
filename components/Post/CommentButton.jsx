@@ -9,7 +9,7 @@ const CommentButton = ({ comments }) => {
       <Flex gap={".5rem"} align="center">
         <Iconify
           icon="iconamoon:comment-dots-fill"
-          width={"21px"}
+          width={"45px"}
           color="grey"
         />
         <Typography.Text className="typoBody2">
